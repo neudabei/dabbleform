@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  post '/:email', to: 'submissions#create'
+  post '/submission', to: 'submissions#create'
 end
