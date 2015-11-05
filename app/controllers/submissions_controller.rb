@@ -1,27 +1,44 @@
 class SubmissionsController < ApplicationController
+  before_filter :require_verification
+
   def create
-    submission = Submission.new(email: params[:email], account_id: 1)
-    # @request_domain = env["HTTP_REFERER"]
-    # email from route of form submission /email@domain.com 
-    # find account by email@domain.com
-    # account website  == env["HTTP_REFERER"] ?
 
-    # env["HTTP_REFERER"].start_with?("http://robertsj.com/")
-    # http://robertsj.com innerhalb der () ersetzen mit domain aus zu submission account_id gehöriger website
+    account_email_submitted_to = params[:account_email] + "." + params[:format]
 
-    binding.pry
+    @account = Account.find_by(email: account_email_submitted_to) # email from domain not from form
 
-    if submission.save
-      render plain: "Thanks for submitting!"
-      # redirect_to "submission domain"
+    def account_verified?
+      env["HTTP_REFERER"].start_with?(@account.website)
+      # +  account_email_submitted_to belongs to this account
+      # && account_email_submitted_to == account.email
+    end
+
+    # if account_verified? 
+      # create new entry with corresponding account_id
+      # send email to the account owner informing about new entry
+    # else
+      # send verification email to account_email_submitted_to
+      # add new account 
+    # end
+
+
+
+    submission = Submission.new(email: params[:email], account_id: @account.id)
+
+    if account_verified?
+      if submission.save
+        render plain: "Thanks for submitting!"
+        # redirect_to "submission domain"
+        # send email to the account owner informing about new entry
+      else
+        render plain: "Something went wrong!"
+      end
     else
-      render plain: "Something went wrong!"
+      render plain: "Account doesn't seem to be verified"
+      # add new account:
+        # - write domain created with get_host method to db as well as email submitted to
+      # send verification email to account_email_submitted_to
     end
   end
-  
-  # private
 
-  #   def submission_params
-  #     params.require(:submission).permit(:email, :name, :message)
-  #   end
 end
