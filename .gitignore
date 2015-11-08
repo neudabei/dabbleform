@@ -15,3 +15,24 @@
 /log/*
 !/log/.keep
 /tmp
+
+database.yml
+
+# OS or Editor folders
+.DS_Store
+._*
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+*.sublime-project
+*.sublime-workspace
+.idea
+
+todo.md
+
+# Ignore ENV files
+application.yml
