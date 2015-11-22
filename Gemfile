@@ -19,3 +19,7 @@ group :development, :test do
   gem "letter_opener"
 end
 
+group :production, :staging do
+  gem 'rails_12factor'
+end
+
