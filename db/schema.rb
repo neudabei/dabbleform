@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101204559) do
+ActiveRecord::Schema.define(version: 20151122180449) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20151101204559) do
     t.boolean  "verified"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token"
   end
 
   create_table "submissions", force: :cascade do |t|
