@@ -17,7 +17,7 @@ class SubmissionsController < ApplicationController
         AppMailer.send_account_verification_email(@existing_account).deliver_now
       end
     else 
-      new_account = Account.new(website: website_submitted_from, email: account_email_submitted_to, verified: false)
+      new_account = Account.new(website: website_submitted_from, email: account_email_submitted_to, token: generate_token, verified: false)
       if new_account.save
         render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
         AppMailer.send_account_verification_email(new_account).deliver_now
@@ -43,7 +43,9 @@ class SubmissionsController < ApplicationController
     params[:account_email] + "." + params[:format]
   end
 
-
+  def generate_token
+    SecureRandom.urlsafe_base64
+  end
 
 
 
