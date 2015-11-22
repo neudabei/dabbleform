@@ -11,7 +11,7 @@ class SubmissionsController < ApplicationController
           else
             render plain: "Something went wrong!"
           end
-        send_new_submission_email(@submission, @existing_account)
+        AppMailer.send_new_submission_email(@submission, @existing_account).deliver_now
       else
         render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this account."
         AppMailer.send_account_verification_email(@existing_account).deliver_now
@@ -19,7 +19,7 @@ class SubmissionsController < ApplicationController
     else 
       new_account = Account.new(website: website_submitted_from, email: account_email_submitted_to, verified: false)
       if new_account.save
-        render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this account."
+        render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
         AppMailer.send_account_verification_email(new_account).deliver_now
       else
         render plain: "Something went wrong!"
@@ -32,7 +32,7 @@ class SubmissionsController < ApplicationController
 
   def website_belongs_to_existing_account?
     @existing_account = Account.find_by(website: website_submitted_from)
-    account.exists?
+    !!@existing_account
   end
 
   def website_submitted_from
