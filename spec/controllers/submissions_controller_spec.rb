@@ -3,7 +3,36 @@ require 'rails_helper'
 describe SubmissionsController do
   describe "POST create" do
     context "website submitted from belongs to existing account" do
+      context "website from existing account belongs to email submitted do" do
+        context "existing account is verified" do
+          it "adds submission to existing account"
+          it "sends email to account owner with new submission content"
+        end
+        context "existing account is not verified" do
+          it "sends out email with verification link"
+          it "shows page informing about necessity to confirm account via link in email"
+        end
+      end
 
+      context "website from existing account doesn't belong to email submitted to" do
+        before do
+          @account = Account.create(email: 'email@domain.com', website: 'domain.com', verified: true)
+          @request.env["HTTP_REFERER"] = "http://www.domain.com"
+          post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'new_email@domain', format: 'com'}
+        end
+        
+        it "adds email to account" do
+          expect(@account.reload.email).to eq("new_email@domain.com")
+        end
+
+        it "sends out email with verification link to the new /email submitted to" do
+          expect(ActionMailer::Base.deliveries.last.to).to eq(["new_email@domain.com"])
+        end
+
+        it "shows page informing about necessity to confirm account via link in email" do
+          expect(response.body).to eq("Thanks for submitting! Please check your email new_email@domain.com and verify this dabbleform for your website and new email.") 
+        end
+      end
     end
 
     context "website submitted from does not belong to existing account" do
@@ -11,8 +40,6 @@ describe SubmissionsController do
         @request.env["HTTP_REFERER"] = "http://www.new_domain.com"
         post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
       end
-
-      after { ActionMailer::Base.deliveries.clear }
       
       it "creates new account" do  
         expect(Account.count).to eq(1)
@@ -28,7 +55,3 @@ describe SubmissionsController do
     end
   end
 end
-
-
-# Notes:
-# - clear email queue in between (here or via config file)

@@ -14,11 +14,11 @@ class SubmissionsController < ApplicationController
             end
           AppMailer.send_new_submission_email(@submission, @existing_account).deliver_now
         else
-          render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this account."
+          render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
           AppMailer.send_account_verification_email(@existing_account).deliver_now
         end
       else
-        render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this account."
+        render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website and new email."
         @existing_account.update(email: account_email_submitted_to, verified: false, token: generate_token)
         @existing_account = Account.find_by(website: website_submitted_from) # reassign account to variable to include the new email address
         AppMailer.send_account_verification_email(@existing_account).deliver_now
