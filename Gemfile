@@ -18,6 +18,7 @@ group :development, :test do
   gem 'spring'
   gem 'letter_opener'
   gem 'rspec-rails', '~> 3.0'
+  gem 'shoulda-matchers', '~> 3.0'
 end
 
 group :production, :staging do
