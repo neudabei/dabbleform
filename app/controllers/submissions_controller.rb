@@ -43,7 +43,7 @@ class SubmissionsController < ApplicationController
   end
 
   def website_submitted_from
-    get_host_without_www(env["HTTP_REFERER"])
+    get_host_without_www(request.env["HTTP_REFERER"])
   end
 
   def account_email_submitted_to
