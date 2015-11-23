@@ -1,3 +1,6 @@
 require 'rails_helper'
 
-it { should have_many(:submissions) }
+describe Account do
+  it { should have_many(:submissions) }
+  it { should validate_uniqueness_of(:website) }
+end
