@@ -1,6 +1,6 @@
 class AccountsVerificationController < ApplicationController
 
-  def create
+  def verify
     # if params[:token] == @account.token
     # update column 'account.verified' to true
     # and render page "thanks for verifying your account. this website is now ready to accept submissions from your dabbleform"
@@ -11,9 +11,9 @@ class AccountsVerificationController < ApplicationController
     account = Account.find_by(token: params[:token])
     if account && account.token == params[:token]
       account.update(verified: true)
-      render plain: "Thanks for verifying your account. The website #{account.website} is now ready to accept submissions from your dabbleform" 
+      render plain: "Thanks for verifying your account. The website #{account.website} is now ready to accept submissions from your dabbleform." 
     else
-      render plain: "Your token has expired. Try submitting again or get in touch with support via support@dabbleform.com" 
+      render plain: "Your token has expired. Get in touch with support via support@dabbleform.com if you have problems verifying your account." 
     end
   end
 
