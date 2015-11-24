@@ -17,8 +17,14 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
   gem 'letter_opener'
+end
+
+group :test do
   gem 'rspec-rails', '~> 3.0'
+  gem 'capybara'
+  gem 'capybara-email'
   gem 'shoulda-matchers', '~> 3.0'
+
 end
 
 group :production, :staging do
