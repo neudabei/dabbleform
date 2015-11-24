@@ -8,7 +8,7 @@ class SubmissionsController < ApplicationController
         if @existing_account.verified?
           @submission = Submission.new(email: params[:email], name: params[:name], message: params[:message], account_id: @existing_account.id)
             if @submission.save
-              render plain: "Thanks for submitting!"
+              render plain: "Thanks for submitting with dabbleform!"
             else
               render plain: "Something went wrong!"
             end
