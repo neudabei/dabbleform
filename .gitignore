@@ -33,6 +33,7 @@ nbproject
 .idea
 
 todo.md
+plan.md
 
 # Ignore ENV files
 application.yml
