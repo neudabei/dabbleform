@@ -6,7 +6,7 @@ describe SubmissionsController do
       context "email submitted to belongs to website submitted from" do
         context "account associated with email submitted to is verified" do
           before do
-            Account.create(email: 'account1@domain.com', website: 'domain.com', verified: true, token: "1a2b3c")
+            Account.create(email: 'account1@domain.com', domain: 'domain.com', verified: true, token: "1a2b3c")
             @request.env["HTTP_REFERER"] = "http://www.domain.com"
             post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
           end
@@ -26,7 +26,7 @@ describe SubmissionsController do
 
         context "account associated with email submitted to is not verified" do
           before do
-            Account.create(email: 'account1@domain.com', website: 'domain.com', verified: false, token: "1a2b3c")
+            Account.create(email: 'account1@domain.com', domain: 'domain.com', verified: false, token: "1a2b3c")
             @request.env["HTTP_REFERER"] = "http://www.new_domain.com"
             post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
           end
@@ -43,7 +43,7 @@ describe SubmissionsController do
 
       context "email submitted to does not belong to website submitted from" do
         before do
-          Account.create(email: 'account1@domain.com', website: 'domain.com', verified: true, token: "1a2b3c")
+          Account.create(email: 'account1@domain.com', domain: 'domain.com', verified: true, token: "1a2b3c")
           @request.env["HTTP_REFERER"] = "http://www.another_domain.com"
           post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
         end
