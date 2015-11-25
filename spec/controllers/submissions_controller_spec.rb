@@ -6,7 +6,8 @@ describe SubmissionsController do
       context "email submitted to belongs to website submitted from" do
         context "account associated with email submitted to is verified" do
           before do
-            Account.create(email: 'account1@domain.com', domain: 'domain.com', verified: true, token: "1a2b3c")
+            account = Account.create(email: 'account1@domain.com')
+            Website.create(domain: 'domain.com', verified: true, token: "1a2b3c", account_id: account.id)
             @request.env["HTTP_REFERER"] = "http://www.domain.com"
             post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
           end

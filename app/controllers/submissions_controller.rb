@@ -2,7 +2,7 @@ class SubmissionsController < ApplicationController
   #before_filter :require_verification
 
   def create
-
+    binding.pry
     if email_submitted_to_belongs_to_existing_account?
       if @existing_account.email == account_email_submitted_to
         if @existing_account.verified?
@@ -51,7 +51,11 @@ class SubmissionsController < ApplicationController
   end
 
   def website_submitted_from
-    get_host_without_www(request.env["HTTP_REFERER"])
+    if request.env["HTTP_REFERER"].nil? 
+      'no_http_referer'
+    else
+      get_host_without_www(request.env["HTTP_REFERER"])
+    end
   end
 
   def account_email_submitted_to
