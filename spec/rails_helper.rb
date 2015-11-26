@@ -55,6 +55,27 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.after(:each) { ActionMailer::Base.deliveries.clear }
 
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each, :js => true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
 end
 
 Shoulda::Matchers.configure do |config|
