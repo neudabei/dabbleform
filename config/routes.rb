@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   post '/:account_email', to: 'submissions#create'
   get '/registration', to: 'accounts#create'
 
-  get '/account_verification/:token', to: 'accounts_verification#verify', as: 'account_verification'
+  get '/websites_verification/:token', to: 'websites_verification#verify', as: 'website_verification'
 end

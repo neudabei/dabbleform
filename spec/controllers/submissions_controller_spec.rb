@@ -17,7 +17,7 @@ describe SubmissionsController do
           end
 
           it "sends out email to account owner informing about new submission" do
-            expect(ActionMailer::Base.deliveries.last.to).to eq(["email@domain.com"])
+            expect(ActionMailer::Base.deliveries.last.to).to eq(["account1@domain.com"])
           end
 
           it "shows standard thank you page for submitting" do
@@ -27,7 +27,8 @@ describe SubmissionsController do
 
         context "account associated with email submitted to is not verified" do
           before do
-            Account.create(email: 'account1@domain.com', domain: 'domain.com', verified: false, token: "1a2b3c")
+            account = Account.create(email: 'account1@domain.com')
+            Website.create(domain: 'domain.com', verified: false, token: "1a2b3c", account_id: account.id)
             @request.env["HTTP_REFERER"] = "http://www.new_domain.com"
             post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
           end
@@ -44,18 +45,22 @@ describe SubmissionsController do
 
       context "email submitted to does not belong to website submitted from" do
         before do
-          Account.create(email: 'account1@domain.com', domain: 'domain.com', verified: true, token: "1a2b3c")
+          account = Account.create(email: 'account1@domain.com')
+          Website.create(domain: 'domain.com', verified: false, token: "1a2b3c", account_id: account.id)
+          
           @request.env["HTTP_REFERER"] = "http://www.another_domain.com"
           post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
         end
 
         it "adds website to websites associated with account" do
-          expect(Account.first.websites).to include("another_domain.com")
+          expect(Account.first.reload.websites.last.domain).to eq("another_domain.com")
         end
 
-        it "adds 'no website referer' if website has no HTTP_REFERER" do
-          @request.env["HTTP_REFERER"] = nil # does this work?
-          expect(Account.first.website).to eq("no_referer")
+        it "adds 'no_http_referer' if website has no HTTP_REFERER" do
+          #@request.env["HTTP_REFERER"] = nil # does this work?
+          @request.env["HTTP_REFERER"] = nil
+          post :create, {email: 'john@email.com', name: 'John', message: 'Hey there, great website!', account_email: 'account1@domain', format: 'com'}
+          expect(Account.first.websites.last.domain).to eq("no_http_referer")
         end
 
         it "sends out email with verification link" do
@@ -80,7 +85,7 @@ describe SubmissionsController do
         end
 
         it "adds website submitted from to list of sites of acccount" do
-          expect(Account.first.website).to eq("new_domain.com")
+          expect(Account.first.websites.last.domain).to eq("new_domain.com")
         end
 
         it "sends out email with verification link" do
@@ -102,7 +107,7 @@ describe SubmissionsController do
         end
 
         it "adds website submitted from to list of sites of acccount labeled 'no website referer'" do
-          expect(Account.first.website).to eq("no_referer")
+          expect(Account.first.websites.last.domain).to eq("no_http_referer")
         end
 
         it "sends out email with verification link" do
