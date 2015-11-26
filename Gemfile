@@ -24,7 +24,6 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'shoulda-matchers', '~> 3.0'
-
 end
 
 group :production, :staging do
