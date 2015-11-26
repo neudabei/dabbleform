@@ -24,6 +24,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'shoulda-matchers', '~> 3.0'
+  gem 'selenium-webdriver'
 end
 
 group :production, :staging do
