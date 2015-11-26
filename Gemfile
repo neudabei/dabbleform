@@ -24,9 +24,8 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'shoulda-matchers', '~> 3.0'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 2.4'
   gem 'database_cleaner', '1.2.0'
-
 end
 
 group :production, :staging do

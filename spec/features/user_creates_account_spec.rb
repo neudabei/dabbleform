@@ -7,15 +7,14 @@ feature "User creates account" do
 
   scenario "user creates account" do
     fill_out_form
-    expect(Account.count).to eq(1)
+    expect(page).to have_content("Thanks for submitting! Please check your email email@gmail.com and verify this dabbleform for your website.")
   end
 
   scenario "user confirms account" do
     fill_out_form
     open_email "email@gmail.com"
     current_email.click_link "Verify your account"
-    binding.pry
-    expect(Account.first.websites.reload.first.verified).to eq(true)
+    expect(page).to have_content("Thanks for verifying your website. The website einsteinboards.com is now ready to accept submissions from your dabbleform.")
   end
 
   private 
