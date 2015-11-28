@@ -28,7 +28,7 @@ class SubmissionsController < ApplicationController
     else 
       new_account = Account.new(email: account_email_submitted_to)
       if new_account.save
-        new_website = Website.new(domain: website_submitted_from, account_id: new_account.id, verified: false, token: generate_token) # does the account stored in memory already have an id?
+        new_website = Website.new(domain: website_submitted_from, account_id: new_account.id, verified: false, token: generate_token)
         if new_website.save
           render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
           AppMailer.send_account_verification_email(new_account, new_website).deliver_now
