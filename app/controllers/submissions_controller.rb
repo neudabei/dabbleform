@@ -3,7 +3,8 @@ class SubmissionsController < ApplicationController
 
   def create
     if account_email_submitted_to_belongs_to_existing_account?
-      if account_email_submitted_to_belongs_to_website_submitted_from
+      if account_email_submitted_to_belongs_to_website_submitted_from?
+
         if website_belonging_to_account.verified? # DECIDE: should email also have to be verified? (existing_account.verified?) -> Not really, because no scenario in which website verified, but not email
           @submission = Submission.new(email: params[:email], name: params[:name], message: params[:message], website_id: website_belonging_to_account.id) # Not correct, because same website domain might exist multiple times belonging to different accounts. Write test for this case, because current test suite wouldn't catch this problem. 
             if @submission.save
@@ -43,7 +44,7 @@ class SubmissionsController < ApplicationController
 
   private
 
-  def account_email_submitted_to_belongs_to_website_submitted_from
+  def account_email_submitted_to_belongs_to_website_submitted_from?
     if website_belonging_to_account
     website_belonging_to_account.account_id == existing_account.id
     else
@@ -61,6 +62,7 @@ class SubmissionsController < ApplicationController
 
   def account_email_submitted_to_belongs_to_existing_account?
     !!existing_account
+    # existing.account.email == account_email_submitted_to
   end
 
   # def website_belongs_to_existing_account?
