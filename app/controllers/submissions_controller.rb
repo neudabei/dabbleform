@@ -5,13 +5,13 @@ class SubmissionsController < ApplicationController
       if account_email_submitted_to_belongs_to_website_submitted_from?
 
         if website_belonging_to_account.verified? # DECIDE: should email also have to be verified? (existing_account.verified?) -> Not really, because no scenario in which website verified, but not email
-          @submission = Submission.new(email: params[:email], name: params[:name], message: params[:message], website_id: website_belonging_to_account.id) # Not correct, because same website domain might exist multiple times belonging to different accounts. Write test for this case, because current test suite wouldn't catch this problem. 
-            if @submission.save
+          submission = Submission.new(email: params[:email], name: params[:name], message: params[:message], website_id: website_belonging_to_account.id) # Not correct, because same website domain might exist multiple times belonging to different accounts. Write test for this case, because current test suite wouldn't catch this problem. 
+            if submission.save
               render plain: "Thanks for submitting with dabbleform!"
             else
               render plain: "Something went wrong!"
             end
-          AppMailer.send_new_submission_email(@submission, existing_account, website_belonging_to_account).deliver_now
+          AppMailer.send_new_submission_email(submission, existing_account, website_belonging_to_account).deliver_now
         else
           render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
           AppMailer.send_account_verification_email(existing_account, website_belonging_to_account).deliver_now
