@@ -1,5 +1,4 @@
 class SubmissionsController < ApplicationController
-  #before_filter :require_verification
 
   def create
     if account_email_submitted_to_belongs_to_existing_account?
@@ -62,13 +61,7 @@ class SubmissionsController < ApplicationController
 
   def account_email_submitted_to_belongs_to_existing_account?
     !!existing_account
-    # existing.account.email == account_email_submitted_to
   end
-
-  # def website_belongs_to_existing_account?
-  #   @existing_account = Account.find_by(website: website_submitted_from)
-  #   !!@existing_account
-  # end
 
   def website_submitted_from
     if request.env["HTTP_REFERER"].nil? 
@@ -85,5 +78,4 @@ class SubmissionsController < ApplicationController
   def generate_token
     SecureRandom.urlsafe_base64
   end
-
 end
