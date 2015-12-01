@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "User receives submission" do
+feature "User receives submission", { js: true, vcr: true } do
   before do
     Capybara.current_driver = :selenium
     account = Account.create(email: 'email@gmail.com')

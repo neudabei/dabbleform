@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "User creates account" do
+feature "User creates account", { js: true, vcr: true } do
   before do
     Capybara.current_driver = :selenium
   end

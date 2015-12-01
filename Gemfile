@@ -26,6 +26,8 @@ group :test do
   gem 'shoulda-matchers', '~> 3.0'
   gem 'selenium-webdriver', '~> 2.4'
   gem 'database_cleaner', '1.2.0'
+  gem 'webmock'
+  gem 'vcr'
 end
 
 group :production, :staging do
