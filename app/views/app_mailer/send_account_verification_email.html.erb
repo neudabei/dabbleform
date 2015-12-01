@@ -1,4 +1,4 @@
 <p> Welcome to Dabbleform, </p>
-<p> Click the link below to verify your dabbleform for <%= @website %> </p>
+<p> Click the link below to verify your dabbleform for <%= @website.domain %> </p>
 
 <%= link_to "Verify your account", website_verification_url(@website.token) %>
