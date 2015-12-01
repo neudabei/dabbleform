@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'sidekiq'
 gem 'figaro'
 gem 'pg'
 gem 'pry'

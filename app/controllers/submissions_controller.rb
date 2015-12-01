@@ -11,16 +11,16 @@ class SubmissionsController < ApplicationController
             else
               render plain: "Something went wrong!"
             end
-          AppMailer.send_new_submission_email(submission, existing_account, website_belonging_to_account).deliver_now
+          AppMailer.delay.send_new_submission_email(submission, existing_account, website_belonging_to_account)
         else
           render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
-          AppMailer.send_account_verification_email(existing_account, website_belonging_to_account).deliver_now
+          AppMailer.delay.send_account_verification_email(existing_account, website_belonging_to_account)
         end
       else
         new_website = Website.new(domain: website_submitted_from, account_id: existing_account.id, verified: false, token: generate_token)
         if new_website.save
           render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
-          AppMailer.send_account_verification_email(existing_account, new_website).deliver_now
+          AppMailer.delay.send_account_verification_email(existing_account, new_website)
         else
           render plain: "Soemthing went wrong!"
         end
@@ -31,7 +31,7 @@ class SubmissionsController < ApplicationController
         new_website = Website.new(domain: website_submitted_from, account_id: new_account.id, verified: false, token: generate_token)
         if new_website.save
           render plain: "Thanks for submitting! Please check your email #{account_email_submitted_to} and verify this dabbleform for your website."
-          AppMailer.send_account_verification_email(new_account, new_website).deliver_now
+          AppMailer.delay.send_account_verification_email(new_account, new_website)
         else
           render plain: "Soemthing went wrong!"
         end

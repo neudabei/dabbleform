@@ -8,9 +8,10 @@ require 'capybara/rspec'
 require 'capybara/email/rspec'
 require 'webmock/rspec'
 require 'vcr'
+require 'sidekiq/testing'
 
+Sidekiq::Testing.inline!
 Capybara.server_port = 52662
-
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
