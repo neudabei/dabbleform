@@ -1,0 +1,20 @@
+machine:
+  ruby:
+    version: 2.2.1
+deployment:
+  production:
+    branch: master
+    commands:
+      - heroku maintenance:on --app dabbleform
+      - heroku pg:backups capture --app dabbleform
+      - git push git@heroku.com:dabbleform.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app dabbleform
+      - heroku maintenance:off --app dabbleform
+  staging:
+    branch: staging
+    commands:
+      - heroku maintenance:on --app staging-dabbleform
+      - git fetch origin --unshallow
+      - git push git@heroku.com:staging-dabbleform.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app staging-dabbleform
+      - heroku maintenance:off --app sstaging-dabbleform
